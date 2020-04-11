@@ -7,6 +7,9 @@ const querystring = require('querystring');
 const StringDecoder = require('string_decoder').StringDecoder;
 const config = require('./config');
 const fs = require('fs');
+const handlers = require('./lib/handlers');
+const helpers = require('./lib/helpers');
+
 
 // The server should respond to all requests with a string
 
@@ -17,7 +20,7 @@ const httpServer = http.createServer(function(req, res) {
 
 // Start the HTTP server
 httpServer.listen(config.httpPort, function() {
-    console.log(`the server is listening on port ${config.httpPort}`);
+    console.log(`the http server is listening on port ${config.httpPort}`);
 });
 
 // Instantiate the HTTPs server
@@ -32,7 +35,7 @@ const httpsServer = https.createServer(httpsServerOptions, function(req, res) {
 
 // Start the HTTP server
 httpsServer.listen(config.httpsPort, function() {
-    console.log(`the server is listening on port ${config.httpsPort}`);
+    console.log(`the https server is listening on port ${config.httpsPort}`);
 });
 
 // All the sever logic for both the http and https server
@@ -73,7 +76,7 @@ const unifiedServer = function(req, res) {
             queryStringObject,
             method,
             headers,
-            payload: buffer
+            payload: helpers.parseJsonToObject(buffer)
         };
 
         // route the request to the handler specified in the router
@@ -90,20 +93,8 @@ const unifiedServer = function(req, res) {
     });
 };
 
-// define handlers
-const handlers = {};
-
-// Ping handler
-handlers.ping = function(data, cb) {
-    cb(200);
-};
-
-// not found handler
-handlers.notFound = function(data, cb) {
-    cb(404);
-};
-
 // define a request router
 const router ={
-    ping: handlers.ping
+    ping: handlers.ping,
+    users: handlers.users
 };
