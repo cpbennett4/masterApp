@@ -16,4 +16,14 @@ const tosAgreementIsValid = function(tosAgreement) {
     return typeof tosAgreement === 'boolean' && tosAgreement === true;
 }
 
-module.exports = { userNameIsValid, phoneIsValid, passwordIsValid, tosAgreementIsValid };
+const idIsValid = function(id) {
+    return typeof id === 'string' && id.trim().length === 20;
+}
+
+const extendIsValid = function(extend) {
+    console.log('extned: ', extend);
+    console.log('extned: ', typeof extend);
+    return typeof extend === 'boolean' && extend === true;
+}
+
+module.exports = { userNameIsValid, phoneIsValid, passwordIsValid, tosAgreementIsValid, idIsValid, extendIsValid };
